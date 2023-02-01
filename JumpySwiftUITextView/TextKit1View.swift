@@ -22,19 +22,18 @@ struct TextKit1View: UIViewRepresentable {
 
     func updateUIView(_ uiView: UIViewType, context: Context) {
         guard let view = uiView as? UITextView, activeTab == 1 else { return }
+        print("*** Show Tab 1: TextKit1View")
         
-        let p = CGPoint(x: 0, y: 2380)
+        let p = CGPoint(x: 0, y: 2500)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { 
             // TextKit1 ensure layout
             view.layoutManager.ensureLayout(for: view.textContainer)
 
-            // Maximum content offset in this demo is (0.0, 2380.0).
-            // We expect scroll view to scroll to bottom, however it doesn't move at all if animated is set to false
+            // Maximum content offset in this demo is (0.0, 2384.0).
+            print(">>> Show Tab 1: TextKit1View to offset \(p)")
+            // Able to scroll to given content offset on first display
             view.setContentOffset(p, animated: false)
-            
-            // Setting animated to true can scroll the scroll view to bottom
-            // view.setContentOffset(p, animated: true)
         }
     }
 
@@ -51,7 +50,7 @@ struct TextKit1View: UIViewRepresentable {
         }
         
         func scrollViewDidScroll(_ scrollView: UIScrollView) {
-            print("*** contentOffset: \(scrollView.contentOffset)")
+            print("*** Tab 1: contentOffset: \(scrollView.contentOffset)")
         }
     }
 }

@@ -23,8 +23,9 @@ struct TextKit2View: UIViewRepresentable {
 
     func updateUIView(_ uiView: UIViewType, context: Context) {
         guard let view = uiView as? UITextView, activeTab == 2 else { return }
+        print("*** Show Tab 2: TextKit2View")
 
-        let p = CGPoint(x: 0, y: 2380)
+        let p = CGPoint(x: 0, y: 2500)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) { 
             // TextKit2 ensure layout
@@ -34,12 +35,21 @@ struct TextKit2View: UIViewRepresentable {
             
             textLayoutManager.ensureLayout(for: textContentStorage.documentRange)
 
-            // Maximum content offset in this demo is (0.0, 2331.0).
-            // We expect scroll view to scroll to bottom, however it doesn't move at all if animated is set to false
+            // Maximum content offset in this demo is (0.0, 2384.0).
+            print(">>> Show Tab 2: TextKit2View to offset \(p)")
+            // It doesn't scroll to given contentOffset on first display
+            // - contentOffset is reset to zero after several iterations (see console log)
+            // However, this becomes possible if text view is shown second time (by switching tab) and going forward.
             view.setContentOffset(p, animated: false)
             
-            // Setting animated to true can scroll the scroll view to bottom
-            // view.setContentOffset(p, animated: true)
+            // Setting animated to true can scroll the text view to bottom on first display
+//            view.setContentOffset(p, animated: true)
+            
+            // Using adjustViewport has no effect
+//            textLayoutManager.textViewportLayoutController.adjustViewport(byVerticalOffset: p.y)
+            
+            // Using reloaceViewport has no effect
+//            textLayoutManager.textViewportLayoutController.relocateViewport(to: textContentStorage.documentRange.endLocation)
         }
     }
 
@@ -56,7 +66,7 @@ struct TextKit2View: UIViewRepresentable {
         }
         
         func scrollViewDidScroll(_ scrollView: UIScrollView) {
-            print("*** contentOffset: \(scrollView.contentOffset)")
+            print("*** Tab 2: contentOffset: \(scrollView.contentOffset)")
         }
     }
 }

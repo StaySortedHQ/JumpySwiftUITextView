@@ -24,7 +24,7 @@ struct ContentView: View {
                 }
                 .tag(2)
             
-            TextKit2AdjustView()
+            TextKit2AdjustView(activeTab: $activeTab)
                 .tabItem {
                     Label("TextKit2 Adjust", systemImage: "list.dash")
                 }
