@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0665A8A1298A9077000A42F5 /* TextKit1AdjustView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0665A8A0298A9077000A42F5 /* TextKit1AdjustView.swift */; };
 		4204CB2B298A19240079169C /* JumpySwiftUITextViewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4204CB2A298A19240079169C /* JumpySwiftUITextViewApp.swift */; };
 		4204CB2D298A19240079169C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4204CB2C298A19240079169C /* ContentView.swift */; };
 		4204CB2F298A19250079169C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4204CB2E298A19250079169C /* Assets.xcassets */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0665A8A0298A9077000A42F5 /* TextKit1AdjustView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextKit1AdjustView.swift; sourceTree = "<group>"; };
 		4204CB27298A19240079169C /* JumpySwiftUITextView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JumpySwiftUITextView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4204CB2A298A19240079169C /* JumpySwiftUITextViewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JumpySwiftUITextViewApp.swift; sourceTree = "<group>"; };
 		4204CB2C298A19240079169C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				4204CB2C298A19240079169C /* ContentView.swift */,
 				4204CB38298A74610079169C /* TextKit1View.swift */,
 				4204CB3A298A753D0079169C /* TextKit2View.swift */,
+				0665A8A0298A9077000A42F5 /* TextKit1AdjustView.swift */,
 				4204CB3C298A7A750079169C /* TextKit2AdjustView.swift */,
 				4204CB3E298A7AAB0079169C /* Utils.swift */,
 				4204CB2E298A19250079169C /* Assets.xcassets */,
@@ -153,6 +156,7 @@
 				4204CB2D298A19240079169C /* ContentView.swift in Sources */,
 				4204CB2B298A19240079169C /* JumpySwiftUITextViewApp.swift in Sources */,
 				4204CB39298A74610079169C /* TextKit1View.swift in Sources */,
+				0665A8A1298A9077000A42F5 /* TextKit1AdjustView.swift in Sources */,
 				4204CB3B298A753D0079169C /* TextKit2View.swift in Sources */,
 				4204CB3F298A7AAB0079169C /* Utils.swift in Sources */,
 			);

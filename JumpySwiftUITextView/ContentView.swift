@@ -24,11 +24,17 @@ struct ContentView: View {
                 }
                 .tag(2)
             
+            TextKit1AdjustView(activeTab: $activeTab)
+                .tabItem {
+                    Label("TextKit1 Adjust", systemImage: "list.dash")
+                }
+                .tag(3)
+            
             TextKit2AdjustView(activeTab: $activeTab)
                 .tabItem {
                     Label("TextKit2 Adjust", systemImage: "list.dash")
                 }
-                .tag(3)
+                .tag(4)
         }
     }
 }

@@ -1,14 +1,14 @@
 //
-//  TextKit2AdjustView.swift
+//  TextKit1AdjustView.swift
 //  JumpySwiftUITextView
 //
-//  Created by Joseph Cheung on 1/2/2023.
+//  Created by Harry Ng on 1/2/2023.
 //
 
 import Combine
 import SwiftUI
 
-class CustomUITextView: UITextView {
+class CustomUITextView1: UITextView {
     private var allowsScrolling: Bool = true
     
     override var contentOffset: CGPoint {
@@ -16,24 +16,20 @@ class CustomUITextView: UITextView {
         set {
             guard allowsScrolling else { return }
             super.contentOffset = newValue
-            print("*** Tab 4: didSet contentOffset: \(newValue)")
+            print("*** Tab 3: didSet contentOffset: \(newValue)")
         }
     }
     
     func scroll() {
-        guard let textContentStorage = self.textContentStorage,
-              let textLayoutManager = self.textLayoutManager
-        else { return }
         print("*** scroll()")
-        textLayoutManager.ensureLayout(for: textContentStorage.documentRange)
+        layoutManager.ensureLayout(for: textContainer)
         self.layoutIfNeeded()
         let offset = CGPoint(x: 0, y: 2500)
         self.setContentOffset(offset, animated: false)
     }
     
     func updateText() {
-//        updateTextUsingCaretRect()
-        updateTextUsingEnumerateTextSegments()
+        updateTextUsingCaretRect()
     }
     
     private func updateTextUsingCaretRect() {
@@ -62,65 +58,36 @@ class CustomUITextView: UITextView {
         }
     }
     
-    private func updateTextUsingEnumerateTextSegments() {
-        guard let textLayoutManager = self.textLayoutManager else { return }
-        let before = textLayoutManager.rectOfFirstTextSegment(in: self.selectedRange)
-        let globalBefore = self.convert(before, to: nil)
-
-        updateTextContent()
-        
-        ensureLayout()
-        
-        let after = textLayoutManager.rectOfFirstTextSegment(in: self.selectedRange)
-        let globalAfter = self.convert(after, to: nil)
-
-        let dy = globalAfter.minY - globalBefore.minY
-
-        if dy != 0 {
-            // Adjust textView contentOffset
-            let newOffset = self.contentOffset.offset(dy: dy)
-            print("*** newOffset: \(newOffset) - before: \(globalBefore.minY) - after: \(globalAfter.minY) - dy: \(dy)")
-            
-//            self.textView.allowsScrolling = false
-//            self.textView.isScrollEnabled = false
-//            self.textView.allowsScrolling = true
-            self.setContentOffset(newOffset, animated: false)
-//            self.textView.isScrollEnabled = true
-        }
-    }
-    
     // ===============
     // MARK: - Helpers
     // ===============
 
     private func updateTextContent() {
-        self.textContentStorage?.performEditingTransaction { [weak self] in
-            guard let textView = self else { return }
-            let text = "built-in text controls, the components in the TextKit stack"
-            let count = text.count
-            
-            let affectedRanges = [
-                NSRange(location: 9, length: 3),
-            ]
-            
-            for affectedRange in affectedRanges {
-                textView.textStorage.replaceCharacters(in: affectedRange, with: text)
-                let prevRange = textView.selectedRange
-                textView.selectedRange = .init(location: prevRange.location + count - 3, length: prevRange.length)
-            }
+        textStorage.beginEditing()
+        let text = "built-in text controls, the components in the TextKit stack"
+        let count = text.count
+        
+        let affectedRanges = [
+            NSRange(location: 9, length: 3),
+        ]
+        
+        for affectedRange in affectedRanges {
+            textStorage.replaceCharacters(in: affectedRange, with: text)
+            let prevRange = selectedRange
+            selectedRange = .init(location: prevRange.location + count - 3, length: prevRange.length)
         }
+        textStorage.endEditing()
     }
     
     private func ensureLayout() {
-        let textRange = self.textContentStorage!.textRange(from: self.textStorage.range)
-        self.textLayoutManager?.ensureLayout(for: textRange)
+        layoutManager.ensureLayout(for: textContainer)
         self.layoutIfNeeded()
     }
-    
+        
 }
 
-// TextKit 2 setContentOffset
-struct CustomTextView: UIViewRepresentable {
+// TextKit 1 setContentOffset
+struct CustomTextView1: UIViewRepresentable {
     enum Action {
         case scroll
         case updateText
@@ -130,7 +97,8 @@ struct CustomTextView: UIViewRepresentable {
     
     func makeUIView(context: Context) -> some UIView {
         // TextKit2 UITextView
-        let view = CustomUITextView()
+        let view = CustomUITextView1()
+        let _ = view.layoutManager
         view.backgroundColor = .tertiarySystemFill
         view.text = sampleContent
         view.delegate = context.coordinator
@@ -149,7 +117,7 @@ struct CustomTextView: UIViewRepresentable {
 
     func updateUIView(_ uiView: UIViewType, context: Context) {
         guard let _ = uiView as? UITextView, activeTab == 3 else { return }
-        print("*** Show Tab 4: TextKit2AdjustView")
+        print("*** Show Tab 3: TextKit1AdjustView")
     }
 
     func makeCoordinator() -> Coordinator {
@@ -158,21 +126,20 @@ struct CustomTextView: UIViewRepresentable {
     
     final class Coordinator: NSObject, UITextViewDelegate {
         
-        let parent: CustomTextView
+        let parent: CustomTextView1
         var cancellables: Set<AnyCancellable> = []
-        init(_ parent: CustomTextView) {
+        init(_ parent: CustomTextView1) {
             self.parent = parent
         }
         
         func scrollViewDidScroll(_ scrollView: UIScrollView) {
-            print("*** Tab 4: contentOffset: \(scrollView.contentOffset)")
+            print("*** Tab 3: contentOffset: \(scrollView.contentOffset)")
         }
     }
 }
-
-struct TextKit2AdjustView: View {
+struct TextKit1AdjustView: View {
     @Binding var activeTab: Int
-    private var action = PassthroughSubject<CustomTextView.Action, Never>()
+    private var action = PassthroughSubject<CustomTextView1.Action, Never>()
     
     init(activeTab: Binding<Int>) {
         self._activeTab = activeTab
@@ -180,7 +147,7 @@ struct TextKit2AdjustView: View {
     
     var body: some View {
         VStack {
-            CustomTextView(
+            CustomTextView1(
                 activeTab: $activeTab,
                 action: action.eraseToAnyPublisher()
             )
@@ -196,8 +163,3 @@ struct TextKit2AdjustView: View {
     }
 }
 
-struct TextKit2AdjustView_Previews: PreviewProvider {
-    static var previews: some View {
-        TextKit2AdjustView(activeTab: .constant(3))
-    }
-}
