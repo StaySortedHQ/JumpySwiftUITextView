@@ -8,8 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var activeTab = 1
+
     var body: some View {
-        MyTextView()
+        TabView(selection: $activeTab) {
+            TextKit1View(activeTab: $activeTab)
+                .tabItem {
+                    Label("TextKit1 Scroll", systemImage: "list.dash")
+                }
+                .tag(1)
+            
+            TextKit2View(activeTab: $activeTab)
+                .tabItem {
+                    Label("TextKit2 Scroll", systemImage: "list.dash")
+                }
+                .tag(2)
+            
+            TextKit2AdjustView()
+                .tabItem {
+                    Label("TextKit2 Adjust", systemImage: "list.dash")
+                }
+                .tag(3)
+        }
     }
 }
 
@@ -18,89 +38,6 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
-
-struct MyTextView: UIViewRepresentable {
-    
-    func makeUIView(context: Context) -> some UIView {
-        // TextKit2 UITextView
-        let view = UITextView(usingTextLayoutManager: true)
-        view.backgroundColor = .tertiarySystemFill
-        view.text = sampleContent
-        view.delegate = context.coordinator
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { 
-            let p = CGPoint(x: 0, y: 2331)
-            // Maximum content offset in this demo is (0.0, 2331.0).
-            // We expect scroll view to scroll to bottom, however it doesn't move at all if animated is set to false
-            view.setContentOffset(p, animated: false)
-            
-            // Setting animated to true can scroll the scroll view to bottom
-            // view.setContentOffset(p, animated: true)
-        }
-        return view
-    }
-
-    func updateUIView(_ uiView: UIViewType, context: Context) {}
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-    
-    final class Coordinator: NSObject, UITextViewDelegate {
-        
-        let parent: MyTextView
-        
-        init(_ parent: MyTextView) {
-            self.parent = parent
-        }
-        
-        func scrollViewDidScroll(_ scrollView: UIScrollView) {
-            print("*** contentOffset: \(scrollView.contentOffset)")
-        }
-    }
-}
-
-struct MyScrollView: UIViewRepresentable {
-    
-    func makeUIView(context: Context) -> some UIView {
-        let view = UIScrollView()
-        view.backgroundColor = .gray
-        
-        let redSquare = UIView()
-        redSquare.backgroundColor = .red
-        redSquare.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-        view.addSubview(redSquare)
-        
-        let greenSquare = UIView()
-        greenSquare.backgroundColor = .green
-        greenSquare.frame = CGRect(x: 0, y: 5000, width: 100, height: 100)
-        view.addSubview(greenSquare)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            view.contentOffset = CGPoint(x: 0, y: 5000)
-            print("*** contentOffset: \(view.contentOffset)")
-        }
-        return view
-    }
-    
-    func updateUIView(_ uiView: UIViewType, context: Context) {}
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-    
-    final class Coordinator: NSObject, UIScrollViewDelegate {
-        
-        let parent: MyScrollView
-        
-        init(_ parent: MyScrollView) {
-            self.parent = parent
-            super.init()
-        }
-        
-    }
-}
-
 
 let sampleContent = """
     Choosing the Right Extension Approach Choosing the Right Extension Approach Choosing the Right Extension Approach Choosing the Right Extension Approach

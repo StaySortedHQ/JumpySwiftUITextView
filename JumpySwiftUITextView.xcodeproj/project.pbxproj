@@ -11,6 +11,10 @@
 		4204CB2D298A19240079169C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4204CB2C298A19240079169C /* ContentView.swift */; };
 		4204CB2F298A19250079169C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4204CB2E298A19250079169C /* Assets.xcassets */; };
 		4204CB32298A19250079169C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4204CB31298A19250079169C /* Preview Assets.xcassets */; };
+		4204CB39298A74610079169C /* TextKit1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4204CB38298A74610079169C /* TextKit1View.swift */; };
+		4204CB3B298A753D0079169C /* TextKit2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4204CB3A298A753D0079169C /* TextKit2View.swift */; };
+		4204CB3D298A7A750079169C /* TextKit2AdjustView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4204CB3C298A7A750079169C /* TextKit2AdjustView.swift */; };
+		4204CB3F298A7AAB0079169C /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4204CB3E298A7AAB0079169C /* Utils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +23,10 @@
 		4204CB2C298A19240079169C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4204CB2E298A19250079169C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4204CB31298A19250079169C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		4204CB38298A74610079169C /* TextKit1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextKit1View.swift; sourceTree = "<group>"; };
+		4204CB3A298A753D0079169C /* TextKit2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextKit2View.swift; sourceTree = "<group>"; };
+		4204CB3C298A7A750079169C /* TextKit2AdjustView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextKit2AdjustView.swift; sourceTree = "<group>"; };
+		4204CB3E298A7AAB0079169C /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +61,10 @@
 			children = (
 				4204CB2A298A19240079169C /* JumpySwiftUITextViewApp.swift */,
 				4204CB2C298A19240079169C /* ContentView.swift */,
+				4204CB38298A74610079169C /* TextKit1View.swift */,
+				4204CB3A298A753D0079169C /* TextKit2View.swift */,
+				4204CB3C298A7A750079169C /* TextKit2AdjustView.swift */,
+				4204CB3E298A7AAB0079169C /* Utils.swift */,
 				4204CB2E298A19250079169C /* Assets.xcassets */,
 				4204CB30298A19250079169C /* Preview Content */,
 			);
@@ -137,8 +149,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4204CB3D298A7A750079169C /* TextKit2AdjustView.swift in Sources */,
 				4204CB2D298A19240079169C /* ContentView.swift in Sources */,
 				4204CB2B298A19240079169C /* JumpySwiftUITextViewApp.swift in Sources */,
+				4204CB39298A74610079169C /* TextKit1View.swift in Sources */,
+				4204CB3B298A753D0079169C /* TextKit2View.swift in Sources */,
+				4204CB3F298A7AAB0079169C /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
