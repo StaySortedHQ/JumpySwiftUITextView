@@ -32,8 +32,8 @@ class CustomUITextView: UITextView {
     }
     
     func updateText() {
-//        updateTextUsingCaretRect()
-        updateTextUsingEnumerateTextSegments()
+        updateTextUsingCaretRect()
+//        updateTextUsingEnumerateTextSegments()
     }
     
     private func updateTextUsingCaretRect() {

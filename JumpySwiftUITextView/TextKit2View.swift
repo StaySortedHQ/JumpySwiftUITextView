@@ -56,7 +56,8 @@ struct TextKit2View: UIViewRepresentable {
         textLayoutManager.ensureLayout(for: textContentStorage.documentRange)
         textView.layoutIfNeeded()
         
-        // Setting animated to true can scroll the text view to bottom on first display
+        // Setting animated to true can scroll the text view to bottom
+        // If animated is set to false, it can only work after running this the second time.
         let p = CGPoint(x: 0, y: 2800)
         textView.setContentOffset(p, animated: false)
     }
