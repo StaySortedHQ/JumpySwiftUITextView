@@ -12,13 +12,13 @@ struct ContentView: View {
 
     var body: some View {
         TabView(selection: $activeTab) {
-            TextKit1View(activeTab: $activeTab)
+            TextKit1ViewWrapper(activeTab: $activeTab)
                 .tabItem {
                     Label("TextKit1 Scroll", systemImage: "list.dash")
                 }
                 .tag(1)
             
-            TextKit2View(activeTab: $activeTab)
+            TextKit2ViewWrapper(activeTab: $activeTab)
                 .tabItem {
                     Label("TextKit2 Scroll", systemImage: "list.dash")
                 }

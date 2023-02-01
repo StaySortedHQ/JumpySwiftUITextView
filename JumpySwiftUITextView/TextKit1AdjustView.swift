@@ -24,7 +24,7 @@ class CustomUITextView1: UITextView {
         print("*** scroll()")
         layoutManager.ensureLayout(for: textContainer)
         self.layoutIfNeeded()
-        let offset = CGPoint(x: 0, y: 2500)
+        let offset = CGPoint(x: 0, y: 2800)
         self.setContentOffset(offset, animated: false)
     }
     
@@ -147,17 +147,21 @@ struct TextKit1AdjustView: View {
     
     var body: some View {
         VStack {
-            CustomTextView1(
-                activeTab: $activeTab,
-                action: action.eraseToAnyPublisher()
-            )
-            HStack {
-                Button("Scroll") {
+            if activeTab == 3 {
+                CustomTextView1(
+                    activeTab: $activeTab,
+                    action: action.eraseToAnyPublisher()
+                )
+            }
+            VStack {
+                Button("Step 1: Scroll") {
                     action.send(.scroll)
                 }
-                Button("Update text") {
+                .padding(.vertical, 4)
+                Button("Step 2: Update text") {
                     action.send(.updateText)
                 }
+                .padding(.vertical, 4)
             }
         }
     }
