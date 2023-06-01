@@ -8,6 +8,12 @@
 import Combine
 import SwiftUI
 
+extension String {
+    var nsString: NSString {
+        self as NSString
+    }
+}
+
 class CustomUITextView: UITextView {
     private var allowsScrolling: Bool = true
     
@@ -36,29 +42,65 @@ class CustomUITextView: UITextView {
 //        updateTextUsingEnumerateTextSegments()
     }
     
+    private var pendingContent: String = ""
+    
     private func updateTextUsingCaretRect() {
+        
+        pendingContent += String(repeating: "Hello world ", count: 10)
+        updateVisiblePendingContent()
         // Get caret rect before text update
-        let beforeLocation = self.selectedRange.location
-        let before = self.caretRect(for: beforeLocation)
-        let globalBefore = self.convert(before, to: nil)
+//        let beforeLocation = self.selectedRange.location
+//        let before = self.caretRect(for: beforeLocation)
+//        let globalBefore = self.convert(before, to: nil)
         
-        updateTextContent()
+//        updateTextContent()
         
-        ensureLayout()
         
-        // Get caret rect after text update
-        let afterLocation = self.selectedRange.location
-        let after = self.caretRect(for: afterLocation)
-        let globalAfter = self.convert(after, to: nil)
-
-        let dy = globalAfter.minY - globalBefore.minY
-
-        if dy != 0 {
-            // Adjust textView contentOffset
-            let newOffset = self.contentOffset.offset(dy: dy)
-            print("*** newOffset: \(newOffset) - before: \(globalBefore.minY) - after: \(globalAfter.minY) - dy: \(dy)")
-            
-            self.setContentOffset(newOffset, animated: false)
+//        ensureLayout()
+//
+//        // Get caret rect after text update
+//        let afterLocation = self.selectedRange.location
+//        let after = self.caretRect(for: afterLocation)
+//        let globalAfter = self.convert(after, to: nil)
+//
+//        let dy = globalAfter.minY - globalBefore.minY
+//
+//        if dy != 0 {
+//            // Adjust textView contentOffset
+//            let newOffset = self.contentOffset.offset(dy: dy)
+//            print("*** newOffset: \(newOffset) - before: \(globalBefore.minY) - after: \(globalAfter.minY) - dy: \(dy)")
+//
+////            self.setContentOffset(newOffset, animated: false)
+//            contentOffset = newOffset
+//        }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        updateVisiblePendingContent()
+    }
+    
+    private func updateVisiblePendingContent() {
+        if let viewportRange = textLayoutManager?.textViewportLayoutController.viewportRange {
+            let firstPragraphNSRange = textContentStorage!.textStorage!.string.nsString.paragraphRange(for: NSRange(location: 0, length: 0))
+            let viewportNSRange = textContentStorage!.nsRange(from: viewportRange)
+            if firstPragraphNSRange.intersection(viewportNSRange) != nil {
+                if !pendingContent.isEmpty {
+                    let content = pendingContent
+                    pendingContent = ""
+                    textContentStorage?.performEditingTransaction {
+                        textContentStorage?.textStorage?.replaceCharacters(in: NSRange(location: 0, length: 0), with: content)
+                    }
+                    isScrollEnabled = false
+                    let range = NSRange(
+                        location: textContentStorage!.textStorage!.range.upperBound,
+                        length: 0
+                    )
+                    selectedRange = range
+                    isScrollEnabled = true
+                }
+            }
         }
     }
     
@@ -82,10 +124,10 @@ class CustomUITextView: UITextView {
             print("*** newOffset: \(newOffset) - before: \(globalBefore.minY) - after: \(globalAfter.minY) - dy: \(dy)")
             
 //            self.textView.allowsScrolling = false
-//            self.textView.isScrollEnabled = false
+            self.isScrollEnabled = false
 //            self.textView.allowsScrolling = true
             self.setContentOffset(newOffset, animated: false)
-//            self.textView.isScrollEnabled = true
+            self.isScrollEnabled = true
         }
     }
     
@@ -113,6 +155,7 @@ class CustomUITextView: UITextView {
     
     private func ensureLayout() {
         let textRange = self.textContentStorage!.textRange(from: self.textStorage.range)
+        self.textLayoutManager?.invalidateLayout(for: textRange)
         self.textLayoutManager?.ensureLayout(for: textRange)
         self.layoutIfNeeded()
     }
@@ -206,3 +249,41 @@ struct TextKit2AdjustView_Previews: PreviewProvider {
         TextKit2AdjustView(activeTab: .constant(3))
     }
 }
+
+
+@available(iOS 15.0, *)
+@available(macOS 12.0, *)
+public protocol TextRangeConvertible {
+    var documentRange: NSTextRange { get }
+    func offset(from: NSTextLocation, to: NSTextLocation) -> Int
+    func location(_ location: NSTextLocation, offsetBy offset: Int) -> NSTextLocation?
+}
+
+@available(iOS 15.0, *)
+@available(macOS 12.0, *)
+public extension TextRangeConvertible {
+    /// Convert NSTextRange to NSRange
+    /// From wwdc2022-10090 - What's new in TextKit and text views
+    func nsRange(from textRange: NSTextRange) -> NSRange {
+        let location = offset(from: documentRange.location, to: textRange.location)
+        let length = offset(from: textRange.location, to: textRange.endLocation)
+        return NSRange(location: location, length: length)
+    }
+    
+    /// Convert NSRange to NSTextRange
+    /// From wwdc2022-10090 - What's new in TextKit and text views
+    func textRange(from nsRange: NSRange) -> NSTextRange {
+        let startLocation = location(documentRange.location, offsetBy: nsRange.location)!
+        let endLocation = location(startLocation, offsetBy: nsRange.length)
+        return NSTextRange(location: startLocation, end: endLocation)!
+    }
+}
+
+@available(iOS 15.0, *)
+@available(macOS 12.0, *)
+extension NSTextLayoutManager: TextRangeConvertible { }
+
+@available(iOS 15.0, *)
+@available(macOS 12.0, *)
+extension NSTextContentManager: TextRangeConvertible { }
+
